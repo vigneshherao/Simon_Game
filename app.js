@@ -19,13 +19,67 @@ function gameFlash(btn){
     },1000)
 }
 
+function userFlash(btn){
+    btn.classList.add("userFlash");
+    setTimeout(function(){
+        btn.classList.remove("userFlash");
+    },700)
+}
+
 function levelUp(){
+    console.log(userGameOrder)
+    userGameOrder = [];
     level++;
     h5.innerText = `level ${level}`;
 
     let indexOfButtons = Math.floor(Math.random()*3);
     let color = btns[indexOfButtons];
     let colorSel = document.querySelector(`.${color}`);
+    gameOrder.push(color);
     gameFlash(colorSel);
-
 }
+
+function userClickedBtn(){
+    let btn = this;
+    let colorId = btn.getAttribute("id");
+    userGameOrder.push(colorId);
+    userFlash(btn);
+    checkColor(userGameOrder.length-1);
+}
+
+let boxButton = document.querySelectorAll(".box");
+
+for(buttonClick of boxButton){
+   buttonClick.addEventListener("click",userClickedBtn);
+}
+
+
+
+
+function checkColor(idx){
+    if(gameOrder[idx]===userGameOrder[idx]){
+        if(gameOrder.length == userGameOrder.length){
+            setTimeout(levelUp(), 1000);
+        }
+    }
+    else{
+        h5.innerHTML = `Game Over ,<b> Score - ${level}</b> <br> Press any key to start! `;
+        let background = document.querySelector("body");
+        background.style.backgroundColor = "red";
+        setTimeout(function(){
+            background.style.backgroundColor = "white";
+        },500);
+        reset();
+    }
+}
+
+
+
+function reset(){
+    started = false;
+    level = 0;
+    gameOrder = [];
+    userGameOrder = [];
+}
+
+
