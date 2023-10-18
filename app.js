@@ -3,8 +3,9 @@ let userGameOrder = [];
 let btns = ["yellow","red","green","purple"];
 let level = 0;
 let started = false;
-
+let boxButton = document.querySelectorAll(".box");
 let h5 = document.querySelector("h5");
+let highest = document.querySelector("h3");
 document.addEventListener("keypress",()=>{
     if(started == false){
         started = true;
@@ -46,16 +47,9 @@ function userClickedBtn(){
     userFlash(btn);
     checkColor(userGameOrder.length-1);
 }
-
-let boxButton = document.querySelectorAll(".box");
-
 for(buttonClick of boxButton){
    buttonClick.addEventListener("click",userClickedBtn);
 }
-
-
-
-
 function checkColor(idx){
     if(gameOrder[idx]===userGameOrder[idx]){
         if(gameOrder.length == userGameOrder.length){
@@ -69,17 +63,13 @@ function checkColor(idx){
         setTimeout(function(){
             background.style.backgroundColor = "white";
         },500);
+        highest.innerText = `Highest Score is : ${level}`;
         reset();
     }
 }
-
-
-
 function reset(){
     started = false;
     level = 0;
     gameOrder = [];
     userGameOrder = [];
 }
-
-
